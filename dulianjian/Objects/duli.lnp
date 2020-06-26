@@ -1,0 +1,3 @@
+".\Objects\main.obj" 
+TO ".\Objects\duli" 
+PRINT(".\Listings\duli.m51")

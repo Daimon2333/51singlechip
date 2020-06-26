@@ -1,0 +1,473 @@
+C51 COMPILER V9.55   MAIN                                                                  06/12/2020 18:26:36 PAGE 1   
+
+
+C51 COMPILER V9.55, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: E:\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) TA
+                    -BS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          /*
+   2          这是组合包 test
+   3          
+   4          
+   5          
+   6          
+   7          */
+   8          
+   9          
+  10          
+  11          
+  12          #include"reg51.h"
+  13          #include"intrins.h"
+  14          typedef unsigned int u16;   //对数据类型进行声明定义
+  15          typedef unsigned char u8;
+  16          
+  17          
+  18          //循迹
+  19          u16 timer1,value1,value2,value3,value4,k=0;//定义全局变量
+  20          float s,s1,s2,s3;
+  21          u8 x3,x4;
+  22          
+  23          //避障
+  24          u16 i=1,h=0,t=0,Q=0;//定义全局变量
+  25          float s,s1,s2,s3;
+  26          u16 pwm=1100,juli=25;//调节pwm周期和检测距离
+  27          
+  28          sbit AIN1=P1^0;//后面两个轮子
+  29          sbit AIN2=P1^1;
+  30          sbit AIN3=P1^2;
+  31          sbit AIN4=P1^3;
+  32          sbit AENA=P1^4;
+  33          sbit AENB=P1^5;
+  34          sbit BIN1=P0^0;//前面两个轮子
+  35          sbit BIN2=P0^1;
+  36          sbit BIN3=P0^2;
+  37          sbit BIN4=P0^3;
+  38          sbit BENA=P0^4;
+  39          sbit BENB=P0^5;
+  40          sbit TRIG1=P3^3; //避障使用
+  41          sbit ECHO1=P3^2; //
+  42          sbit TRIG2=P0^6; //
+  43          sbit ECHO2=P0^7; //
+  44          sbit TRIG3=P2^7; //
+  45          sbit ECHO3=P2^6;
+  46          sbit ss1=P2^5;//寻迹使用
+  47          sbit ss2=P2^4;//
+  48          sbit ss3=P2^3;//
+  49          sbit ss4=P2^2;
+  50          sbit ss5=P2^1;
+  51          sbit near=P2^0;
+  52          sbit k1=P3^4;//独立开关
+  53          
+  54          
+C51 COMPILER V9.55   MAIN                                                                  06/12/2020 18:26:36 PAGE 2   
+
+  55          void delayus(u16 x) //us延时函数
+  56          
+  57          {
+  58   1      
+  59   1      while(x--);
+  60   1      
+  61   1      }
+  62          
+  63          void delay(u16 z) //秒延时函数
+  64          {
+  65   1        u16 j,k;
+  66   1        for(j=z;j>0;j--)
+  67   1           for(k=110;k>0;k--);
+  68   1      }
+  69          
+  70          void init()//避障定时器初始化函数
+  71          {
+  72   1        TMOD|=0X01; //T0 为方式1, GATE=1;
+  73   1        TH0=0;
+  74   1        TL0=0;  
+  75   1        EA=1; 
+  76   1        ET0=1;
+  77   1        TR0=0;
+  78   1        TRIG1=0;
+  79   1        TRIG2=0;
+  80   1        TRIG3=0;
+  81   1      
+  82   1      }
+  83          
+  84          void UsartInit()//串口的初始化注意蓝牙模块的波特率也要是4800
+  85          {
+  86   1        SCON=0X50;      //设置为工作方式1
+  87   1        TMOD=0X20;      //设置计数器工作方式2
+  88   1        PCON=0X80;      //波特率加倍
+  89   1        TH1=0XF3;       //计数器初始值设置，注意波特率是4800的
+  90   1        TL1=0XF3;
+  91   1        ES=1;           //打开接收中断
+  92   1        EA=1;           //打开总中断
+  93   1        TR1=1;          //打开计数器
+  94   1      }
+  95          
+  96          //避障程序
+  97          void  StartModule1()       //启动避障1
+  98          {
+  99   1          TRIG1=1; 
+ 100   1          _nop_(); _nop_(); _nop_(); _nop_(); _nop_(); //这个函数为标准的延时1us的函数
+ 101   1          _nop_(); _nop_(); _nop_(); _nop_(); _nop_(); //他在头文件为"intrins.h"里面
+ 102   1          _nop_(); _nop_(); _nop_(); _nop_(); _nop_(); 
+ 103   1          _nop_(); _nop_(); _nop_(); _nop_(); _nop_(); 
+ 104   1          _nop_();
+ 105   1          TRIG1=0;
+ 106   1      }
+ 107          
+ 108          void  StartModule2()       //启动避障2
+ 109          {
+ 110   1          TRIG2=1;
+ 111   1          _nop_(); _nop_(); _nop_(); _nop_(); _nop_(); 
+ 112   1          _nop_(); _nop_(); _nop_(); _nop_(); _nop_(); 
+ 113   1          _nop_(); _nop_(); _nop_(); _nop_(); _nop_(); 
+ 114   1          _nop_(); _nop_(); _nop_(); _nop_(); _nop_(); 
+ 115   1          _nop_();
+ 116   1          TRIG2=0; 
+C51 COMPILER V9.55   MAIN                                                                  06/12/2020 18:26:36 PAGE 3   
+
+ 117   1      }
+ 118          
+ 119          void  StartModule3()       //启动避障3
+ 120          {
+ 121   1          TRIG3=1;
+ 122   1          _nop_(); _nop_(); _nop_(); _nop_(); _nop_(); 
+ 123   1          _nop_(); _nop_(); _nop_(); _nop_(); _nop_(); 
+ 124   1          _nop_(); _nop_(); _nop_(); _nop_(); _nop_(); 
+ 125   1          _nop_(); _nop_(); _nop_(); _nop_(); _nop_(); 
+ 126   1          _nop_();
+ 127   1          TRIG3=0;
+ 128   1      }
+ 129          
+ 130          
+ 131          void Conut(void) //计算距离 单位cm
+ 132          { 
+ 133   1        u16 time;
+ 134   1        time=TH0*256+TL0;
+ 135   1        TH0=0;
+ 136   1        TL0=0;
+ 137   1        s=(time*1.7)/100;
+ 138   1      }
+ 139          
+ 140          
+ 141          void ceju()
+ 142          {    
+ 143   1            switch(i)
+ 144   1            {
+ 145   2              case 1:StartModule1();break; 
+ 146   2              case 2:StartModule2();break; 
+ 147   2              case 3:StartModule3();break; 
+ 148   2            }
+ 149   1            switch(i)                       //当ECHO为零时等待
+ 150   1            {
+ 151   2              case 1:while(!ECHO1);break; 
+ 152   2              case 2:while(!ECHO2);break; 
+ 153   2              case 3:while(!ECHO3);break; 
+ 154   2            }
+ 155   1            //while(!ECHO1||!ECHO2||!ECHO3); 
+ 156   1            TR0=1; //开始计数
+ 157   1            switch(i)                      //当ECHO为1时计数并等待
+ 158   1            {
+ 159   2              case 1:while(ECHO1);break; 
+ 160   2              case 2:while(ECHO2);break; 
+ 161   2              case 3:while(ECHO3);break; 
+ 162   2            }
+ 163   1            //while(ECHO1||ECHO2||ECHO3); 
+ 164   1            TR0=0; //停止计数
+ 165   1            Conut(); //测距
+ 166   1            TH0=0;   //清零准备下一次计数
+ 167   1            TL0=0; 
+ 168   1            switch(i)
+ 169   1            {
+ 170   2              case 1:s1=s;i++;break; 
+ 171   2              case 2:s2=s;i++;break; 
+ 172   2              case 3:s3=s;i=1;break; 
+ 173   2            }
+ 174   1      } 
+ 175          
+ 176          
+ 177          
+ 178          
+C51 COMPILER V9.55   MAIN                                                                  06/12/2020 18:26:36 PAGE 4   
+
+ 179          
+ 180          //delay调速程序
+ 181          
+ 182          
+ 183          void zz()
+ 184          {
+ 185   1          BIN1=0; //1 反转
+ 186   1          BIN2=1;
+ 187   1          BIN3=0; //2 正
+ 188   1          BIN4=1;
+ 189   1          AIN3=0; //3 反转
+ 190   1          AIN4=1;
+ 191   1          AIN1=0; //4 正转
+ 192   1          AIN2=1;
+ 193   1      }
+ 194          
+ 195          
+ 196          void yz()
+ 197          {
+ 198   1          BIN1=1; 
+ 199   1          BIN2=0;
+ 200   1          BIN3=1; 
+ 201   1          BIN4=0;
+ 202   1          AIN3=1; 
+ 203   1          AIN4=0;
+ 204   1          AIN1=1; 
+ 205   1          AIN2=0;
+ 206   1      }
+ 207          
+ 208          void zhizou()
+ 209          {
+ 210   1          BIN1=1; 
+ 211   1          BIN2=0;
+ 212   1          BIN3=0; 
+ 213   1          BIN4=1;
+ 214   1          AIN3=1; 
+ 215   1          AIN4=0;
+ 216   1          AIN1=0; 
+ 217   1          AIN2=1;
+ 218   1      }
+ 219          
+ 220          void houtui()
+ 221          {
+ 222   1          BIN1=0; 
+ 223   1          BIN2=1;
+ 224   1          BIN3=1; 
+ 225   1          BIN4=0;
+ 226   1          AIN3=0; 
+ 227   1          AIN4=1;
+ 228   1          AIN1=1; 
+ 229   1          AIN2=0;
+ 230   1      }
+ 231          
+ 232          void tingzhi()
+ 233          {
+ 234   1          BIN1=1; 
+ 235   1          BIN2=1;
+ 236   1          BIN3=1; 
+ 237   1          BIN4=1;
+ 238   1          AIN3=1; 
+ 239   1          AIN4=1;
+ 240   1          AIN1=1; 
+C51 COMPILER V9.55   MAIN                                                                  06/12/2020 18:26:36 PAGE 5   
+
+ 241   1          AIN2=1;
+ 242   1      }
+ 243          
+ 244          //四个轮子的PWM调速函数依次如下
+ 245          void yido(u16 x1)//前左轮
+ 246          {
+ 247   1          BENA=1;
+ 248   1          BENB=1;
+ 249   1          AENB=1;
+ 250   1          AENA=1;
+ 251   1          delayus(x1);//置高电平后延时x1us 占空比为x1%100 即  x1/pwm*%100     
+ 252   1          BENA=0;
+ 253   1          BENB=0;
+ 254   1          AENB=0; 
+ 255   1          AENA=0;
+ 256   1          delayus(pwm-x1);
+ 257   1      }
+ 258          
+ 259          
+ 260          
+ 261          
+ 262          //避障判断程序
+ 263          void bizhang()//对s1 s2 s3的值进行对号入座  然后执行相应的运动情况。
+ 264          {
+ 265   1        if(s1>juli&&s2>juli&&s3>juli)//s1为正面s2为左面s3为右面
+ 266   1        {
+ 267   2          if(h==0)
+ 268   2          {
+ 269   3               //直走
+ 270   3           yido(800);
+ 271   3           zhizou();
+ 272   3          }
+ 273   2          else
+ 274   2          {
+ 275   3                  //向右转90度
+ 276   3           yido(1000);
+ 277   3           yz();
+ 278   3           h=0;
+ 279   3          }     
+ 280   2        }
+ 281   1        else if(s1<=juli&&s2>juli&&s3>juli)  
+ 282   1        {
+ 283   2                 //向右转
+ 284   2          yido(1000);
+ 285   2          yz();
+ 286   2        }
+ 287   1        else if(s2<=juli&&s1>juli&&s3>juli)
+ 288   1        {
+ 289   2              //向右转
+ 290   2          yido(1000);
+ 291   2          yz();
+ 292   2          h=0;
+ 293   2        }
+ 294   1        else if(s3<=juli&&s1>juli&&s2>juli)
+ 295   1        {
+ 296   2              //向左转
+ 297   2          yido(1000);
+ 298   2          zz();
+ 299   2          h=0;
+ 300   2        }
+ 301   1        else if(s1<=juli&&s2<=juli&&s3>juli)
+ 302   1        {
+C51 COMPILER V9.55   MAIN                                                                  06/12/2020 18:26:36 PAGE 6   
+
+ 303   2                //向右转
+ 304   2          yido(1000);
+ 305   2          yz();
+ 306   2        }
+ 307   1        else if(s1<=juli&&s3<=juli&&s2>juli)
+ 308   1        {
+ 309   2             //向左转
+ 310   2          yido(1000);
+ 311   2          zz();
+ 312   2        }
+ 313   1        else if(s1>juli&&s2<=juli&&s3<=juli)//这个情况有问题
+ 314   1        {
+ 315   2          if(h==0)
+ 316   2          {
+ 317   3              //减速向前
+ 318   3            yido(1000);
+ 319   3            zhizou();
+ 320   3          }
+ 321   2          else
+ 322   2          {
+ 323   3            //加速后退
+ 324   3            yido(1000);
+ 325   3            houtui();
+ 326   3          }
+ 327   2          
+ 328   2        }
+ 329   1        else if(s1<=juli&&s2<=juli&&s3<=juli)
+ 330   1        { 
+ 331   2          //delay_ms(1);
+ 332   2          h=0;
+ 333   2          //加速后退
+ 334   2          yido(1000);
+ 335   2          houtui();
+ 336   2          h++;
+ 337   2        }
+ 338   1        else
+ 339   1        {
+ 340   2         //停止
+ 341   2          yido(0);
+ 342   2          zhizou();
+ 343   2        }
+ 344   1      
+ 345   1      
+ 346   1      
+ 347   1      }
+ 348          
+ 349          
+ 350            
+ 351          /*
+ 352            循迹逻辑程序
+ 353          */
+ 354          void xunji()//寻迹函数
+ 355          {
+ 356   1          if(ss1==1&&ss2==1&&ss3==0&&ss4==1&&ss5==1)  //线在中间
+ 357   1        {
+ 358   2           yido(250);
+ 359   2           zhizou();
+ 360   2          
+ 361   2          k++;
+ 362   2        }
+ 363   1        if(ss1==1&&ss2==0&&ss3==1&&ss4==1&&ss5==1)  //线在较左侧
+ 364   1        {
+C51 COMPILER V9.55   MAIN                                                                  06/12/2020 18:26:36 PAGE 7   
+
+ 365   2          while(ss3==1&&ss4==1)
+ 366   2          {
+ 367   3           yido(200);
+ 368   3           zz();
+ 369   3            
+ 370   3          k++;
+ 371   3          }
+ 372   2          yz();
+ 373   2            yido(20);
+ 374   2        }
+ 375   1        
+ 376   1        if(ss1==1&&ss2==1&&ss3==1&&ss4==0&&ss5==1) //线在较右侧
+ 377   1        {
+ 378   2          while(ss3==1)
+ 379   2          {
+ 380   3           yido(200);
+ 381   3          yz();
+ 382   3            
+ 383   3          k++;
+ 384   3          }
+ 385   2          zz();
+ 386   2            yido(20);
+ 387   2        }
+ 388   1        
+ 389   1      
+ 390   1      if(k==0)
+ 391   1      {
+ 392   2           yido(250);
+ 393   2           zhizou();
+ 394   2      }
+ 395   1        k=0;
+ 396   1      }
+ 397          
+ 398          void bizhang3()
+ 399          {
+ 400   1              ceju();       //开始测距
+ 401   1              ceju();
+ 402   1              ceju();
+ 403   1              bizhang();
+ 404   1      }
+ 405          
+ 406          
+ 407            
+ 408          //主函数
+ 409          void main()
+ 410          {
+ 411   1        init();
+ 412   1        while(1)
+ 413   1        {  
+ 414   2          if(k1==0)     //检测按键K1是否按下
+ 415   2          { 
+ 416   3            delayus(1000);   //消除抖动 一般大约10ms
+ 417   3            Q++;
+ 418   3      //      if(k1==0)  //再次判断按键是否按下
+ 419   3      //      {     
+ 420   3      //      }
+ 421   3      //      while(!k1);  //检测按键是否松开
+ 422   3          } 
+ 423   2          if(Q==0) 
+ 424   2          { 
+ 425   3            xunji();      
+ 426   3          }
+C51 COMPILER V9.55   MAIN                                                                  06/12/2020 18:26:36 PAGE 8   
+
+ 427   2          else
+ 428   2          {
+ 429   3            bizhang3(); 
+ 430   3          }
+ 431   2          Q=0;
+ 432   2        }
+ 433   1      }
+ 434          
+ 435          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1375    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     42    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

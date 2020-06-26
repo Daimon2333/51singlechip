@@ -1,0 +1,416 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        06/12/2020  17:42:36  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+E:\C51\BIN\BL51.EXE .\Objects\main.obj TO .\Objects\gongcheng PRINT (.\Listings\gongcheng.m51)
+
+
+MEMORY MODEL: SMALL WITH FLOATING POINT ARITHMETIC
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\main.obj (MAIN)
+  E:\C51\LIB\C51FPS.LIB (?C?FPMUL)
+  E:\C51\LIB\C51FPS.LIB (?C?FPDIV)
+  E:\C51\LIB\C51FPS.LIB (?C?FPCMP)
+  E:\C51\LIB\C51FPS.LIB (?C?FCAST)
+  E:\C51\LIB\C51FPS.LIB (?C?FPGETOPN)
+  E:\C51\LIB\C51S.LIB (?C_STARTUP)
+  E:\C51\LIB\C51S.LIB (?C?LNEG)
+  E:\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\gongcheng (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0018H     UNIT         ?DT?MAIN
+            IDATA   0020H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     02B5H     UNIT         ?C?LIB_CODE
+            CODE    02B8H     00DEH     UNIT         ?PR?BIZHANG?MAIN
+            CODE    0396H     00B4H     UNIT         ?PR?CEJU?MAIN
+            CODE    044AH     008CH     UNIT         ?C_C51STARTUP
+            CODE    04D6H     0038H     UNIT         ?PR?CONUT?MAIN
+            CODE    050EH     001AH     UNIT         ?PR?STARTMODULE1?MAIN
+            CODE    0528H     001AH     UNIT         ?PR?STARTMODULE2?MAIN
+            CODE    0542H     001AH     UNIT         ?PR?STARTMODULE3?MAIN
+            CODE    055CH     0018H     UNIT         ?PR?_YIDO?MAIN
+            CODE    0574H     0015H     UNIT         ?PR?INIT?MAIN
+            CODE    0589H     0011H     UNIT         ?PR?ZZ?MAIN
+            CODE    059AH     0011H     UNIT         ?PR?YZ?MAIN
+            CODE    05ABH     0011H     UNIT         ?PR?ZHIZOU?MAIN
+            CODE    05BCH     0011H     UNIT         ?PR?HOUTUI?MAIN
+            CODE    05CDH     0011H     UNIT         ?PR?TINGZHI?MAIN
+            CODE    05DEH     0011H     UNIT         ?PR?MAIN?MAIN
+            CODE    05EFH     0011H     UNIT         ?C_INITSEG
+            CODE    0600H     000BH     UNIT         ?PR?_DELAYUS?MAIN
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\gongcheng (MAIN)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/12/2020  17:42:36  PAGE 2
+
+
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?MAIN
+  +--> ?PR?INIT?MAIN
+  +--> ?PR?CEJU?MAIN
+  +--> ?PR?BIZHANG?MAIN
+
+?PR?CEJU?MAIN
+  +--> ?PR?STARTMODULE1?MAIN
+  +--> ?PR?STARTMODULE2?MAIN
+  +--> ?PR?STARTMODULE3?MAIN
+  +--> ?PR?CONUT?MAIN
+
+?PR?BIZHANG?MAIN
+  +--> ?PR?_YIDO?MAIN
+  +--> ?PR?ZHIZOU?MAIN
+  +--> ?PR?ZZ?MAIN
+  +--> ?PR?YZ?MAIN
+
+?PR?_YIDO?MAIN
+  +--> ?PR?_DELAYUS?MAIN
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\gongcheng (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  C:05CDH         PUBLIC        tingzhi
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  B:0090H.0       PUBLIC        AIN1
+  B:0080H.0       PUBLIC        BIN1
+  B:0090H.1       PUBLIC        AIN2
+  C:04D6H         PUBLIC        Conut
+  B:0080H.1       PUBLIC        BIN2
+  B:0090H.2       PUBLIC        AIN3
+  B:0080H.2       PUBLIC        BIN3
+  B:0090H.3       PUBLIC        AIN4
+  B:0080H.3       PUBLIC        BIN4
+  B:0090H.4       PUBLIC        AENA
+  B:0080H.4       PUBLIC        BENA
+  B:0090H.5       PUBLIC        AENB
+  B:0080H.5       PUBLIC        BENB
+  C:05BCH         PUBLIC        houtui
+  D:0008H         PUBLIC        s1
+  D:000CH         PUBLIC        s2
+  D:0010H         PUBLIC        s3
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/12/2020  17:42:36  PAGE 3
+
+
+  C:05DEH         PUBLIC        main
+  C:0396H         PUBLIC        ceju
+  C:05ABH         PUBLIC        zhizou
+  C:050EH         PUBLIC        StartModule1
+  C:0528H         PUBLIC        StartModule2
+  C:0542H         PUBLIC        StartModule3
+  D:0089H         PUBLIC        TMOD
+  C:0574H         PUBLIC        init
+  D:0014H         PUBLIC        juli
+  C:0560H         PUBLIC        _yido
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:00B0H.2       PUBLIC        ECHO1
+  B:0080H.7       PUBLIC        ECHO2
+  B:00A0H.6       PUBLIC        ECHO3
+  D:0016H         PUBLIC        pwm
+  B:0088H.4       PUBLIC        TR0
+  C:02B8H         PUBLIC        bizhang
+  D:0018H         PUBLIC        h
+  B:00B0H.3       PUBLIC        TRIG1
+  D:001AH         PUBLIC        i
+  B:0080H.6       PUBLIC        TRIG2
+  B:00A0H.7       PUBLIC        TRIG3
+  D:001CH         PUBLIC        s
+  C:059AH         PUBLIC        yz
+  C:0589H         PUBLIC        zz
+  C:0600H         PUBLIC        _delayus
+  -------         PROC          _DELAYUS
+  D:0006H         SYMBOL        x
+  C:0600H         LINE#         51
+  C:0600H         LINE#         53
+  C:0600H         LINE#         55
+  C:060AH         LINE#         57
+  -------         ENDPROC       _DELAYUS
+  -------         PROC          INIT
+  C:0574H         LINE#         60
+  C:0574H         LINE#         61
+  C:0574H         LINE#         62
+  C:0577H         LINE#         63
+  C:057AH         LINE#         64
+  C:057CH         LINE#         65
+  C:057EH         LINE#         66
+  C:0580H         LINE#         67
+  C:0582H         LINE#         68
+  C:0584H         LINE#         69
+  C:0586H         LINE#         70
+  C:0588H         LINE#         72
+  -------         ENDPROC       INIT
+  -------         PROC          STARTMODULE1
+  C:050EH         LINE#         75
+  C:050EH         LINE#         76
+  C:050EH         LINE#         77
+  C:0510H         LINE#         78
+  C:0515H         LINE#         79
+  C:051AH         LINE#         80
+  C:051FH         LINE#         81
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/12/2020  17:42:36  PAGE 4
+
+
+  C:0524H         LINE#         82
+  C:0525H         LINE#         83
+  C:0527H         LINE#         84
+  -------         ENDPROC       STARTMODULE1
+  -------         PROC          STARTMODULE2
+  C:0528H         LINE#         86
+  C:0528H         LINE#         87
+  C:0528H         LINE#         88
+  C:052AH         LINE#         89
+  C:052FH         LINE#         90
+  C:0534H         LINE#         91
+  C:0539H         LINE#         92
+  C:053EH         LINE#         93
+  C:053FH         LINE#         94
+  C:0541H         LINE#         95
+  -------         ENDPROC       STARTMODULE2
+  -------         PROC          STARTMODULE3
+  C:0542H         LINE#         97
+  C:0542H         LINE#         98
+  C:0542H         LINE#         99
+  C:0544H         LINE#         100
+  C:0549H         LINE#         101
+  C:054EH         LINE#         102
+  C:0553H         LINE#         103
+  C:0558H         LINE#         104
+  C:0559H         LINE#         105
+  C:055BH         LINE#         106
+  -------         ENDPROC       STARTMODULE3
+  -------         PROC          CONUT
+  -------         DO            
+  D:0006H         SYMBOL        time
+  -------         ENDDO         
+  C:04D6H         LINE#         109
+  C:04D6H         LINE#         110
+  C:04D6H         LINE#         112
+  C:04E4H         LINE#         113
+  C:04E7H         LINE#         114
+  C:04E9H         LINE#         115
+  C:050DH         LINE#         116
+  -------         ENDPROC       CONUT
+  -------         PROC          CEJU
+  C:0396H         LINE#         119
+  C:0396H         LINE#         120
+  C:0396H         LINE#         121
+  C:03A7H         LINE#         122
+  C:03A7H         LINE#         123
+  C:03ACH         LINE#         124
+  C:03B1H         LINE#         125
+  C:03B4H         LINE#         126
+  C:03B4H         LINE#         127
+  C:03C5H         LINE#         128
+  C:03C5H         LINE#         129
+  C:03CAH         LINE#         130
+  C:03CFH         LINE#         131
+  C:03D2H         LINE#         132
+  C:03D2H         LINE#         134
+  C:03D4H         LINE#         135
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/12/2020  17:42:36  PAGE 5
+
+
+  C:03E5H         LINE#         136
+  C:03E5H         LINE#         137
+  C:03EAH         LINE#         138
+  C:03EFH         LINE#         139
+  C:03F2H         LINE#         140
+  C:03F2H         LINE#         142
+  C:03F4H         LINE#         143
+  C:03F7H         LINE#         144
+  C:03FAH         LINE#         145
+  C:03FCH         LINE#         146
+  C:040DH         LINE#         147
+  C:040DH         LINE#         148
+  C:0422H         LINE#         149
+  C:0437H         LINE#         150
+  C:0449H         LINE#         151
+  C:0449H         LINE#         152
+  -------         ENDPROC       CEJU
+  -------         PROC          ZZ
+  C:0589H         LINE#         154
+  C:0589H         LINE#         155
+  C:0589H         LINE#         156
+  C:058BH         LINE#         157
+  C:058DH         LINE#         158
+  C:058FH         LINE#         159
+  C:0591H         LINE#         160
+  C:0593H         LINE#         161
+  C:0595H         LINE#         162
+  C:0597H         LINE#         163
+  C:0599H         LINE#         164
+  -------         ENDPROC       ZZ
+  -------         PROC          YZ
+  C:059AH         LINE#         166
+  C:059AH         LINE#         167
+  C:059AH         LINE#         168
+  C:059CH         LINE#         169
+  C:059EH         LINE#         170
+  C:05A0H         LINE#         171
+  C:05A2H         LINE#         172
+  C:05A4H         LINE#         173
+  C:05A6H         LINE#         174
+  C:05A8H         LINE#         175
+  C:05AAH         LINE#         176
+  -------         ENDPROC       YZ
+  -------         PROC          ZHIZOU
+  C:05ABH         LINE#         178
+  C:05ABH         LINE#         179
+  C:05ABH         LINE#         180
+  C:05ADH         LINE#         181
+  C:05AFH         LINE#         182
+  C:05B1H         LINE#         183
+  C:05B3H         LINE#         184
+  C:05B5H         LINE#         185
+  C:05B7H         LINE#         186
+  C:05B9H         LINE#         187
+  C:05BBH         LINE#         188
+  -------         ENDPROC       ZHIZOU
+  -------         PROC          HOUTUI
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/12/2020  17:42:36  PAGE 6
+
+
+  C:05BCH         LINE#         190
+  C:05BCH         LINE#         191
+  C:05BCH         LINE#         192
+  C:05BEH         LINE#         193
+  C:05C0H         LINE#         194
+  C:05C2H         LINE#         195
+  C:05C4H         LINE#         196
+  C:05C6H         LINE#         197
+  C:05C8H         LINE#         198
+  C:05CAH         LINE#         199
+  C:05CCH         LINE#         200
+  -------         ENDPROC       HOUTUI
+  C:055CH         SYMBOL        L?0055
+  -------         PROC          L?0054
+  -------         ENDPROC       L?0054
+  C:055CH         SYMBOL        L?0055
+  -------         PROC          _YIDO
+  D:0006H         SYMBOL        x1
+  C:0560H         LINE#         202
+  C:0560H         LINE#         203
+  C:0560H         LINE#         204
+  C:0562H         LINE#         205
+  C:0564H         LINE#         206
+  C:0566H         LINE#         207
+  C:0568H         LINE#         208
+  C:056BH         LINE#         209
+  C:056DH         LINE#         210
+  C:056FH         LINE#         211
+  C:0571H         LINE#         212
+  C:0573H         LINE#         214
+  -------         ENDPROC       _YIDO
+  -------         PROC          TINGZHI
+  C:05CDH         LINE#         216
+  C:05CDH         LINE#         217
+  C:05CDH         LINE#         218
+  C:05CFH         LINE#         219
+  C:05D1H         LINE#         220
+  C:05D3H         LINE#         221
+  C:05D5H         LINE#         222
+  C:05D7H         LINE#         223
+  C:05D9H         LINE#         224
+  C:05DBH         LINE#         225
+  C:05DDH         LINE#         226
+  -------         ENDPROC       TINGZHI
+  -------         PROC          BIZHANG
+  C:02B8H         LINE#         229
+  C:02B8H         LINE#         230
+  C:02B8H         LINE#         312
+  C:02FDH         LINE#         313
+  C:02FDH         LINE#         315
+  C:0300H         LINE#         316
+  C:0303H         LINE#         317
+  C:0303H         LINE#         318
+  C:0346H         LINE#         319
+  C:0346H         LINE#         320
+  C:0349H         LINE#         321
+  C:034CH         LINE#         322
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/12/2020  17:42:36  PAGE 7
+
+
+  C:034CH         LINE#         323
+  C:038FH         LINE#         324
+  C:038FH         LINE#         325
+  C:0392H         LINE#         326
+  C:0395H         LINE#         327
+  C:0395H         LINE#         328
+  -------         ENDPROC       BIZHANG
+  -------         PROC          MAIN
+  C:05DEH         LINE#         331
+  C:05DEH         LINE#         332
+  C:05DEH         LINE#         333
+  C:05E1H         LINE#         334
+  C:05E1H         LINE#         335
+  C:05E1H         LINE#         336
+  C:05E4H         LINE#         337
+  C:05E7H         LINE#         338
+  C:05EAH         LINE#         339
+  C:05EDH         LINE#         340
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        ?C?FPMUL
+  C:0003H         PUBLIC        ?C?FPMUL
+  -------         ENDMOD        ?C?FPMUL
+
+  -------         MODULE        ?C?FPDIV
+  C:010CH         PUBLIC        ?C?FPDIV
+  -------         ENDMOD        ?C?FPDIV
+
+  -------         MODULE        ?C?FPCMP
+  C:01ABH         PUBLIC        ?C?FPCMP
+  C:01A9H         PUBLIC        ?C?FPCMP3
+  -------         ENDMOD        ?C?FPCMP
+
+  -------         MODULE        ?C?FCAST
+  C:022CH         PUBLIC        ?C?FCASTC
+  C:0227H         PUBLIC        ?C?FCASTI
+  C:0222H         PUBLIC        ?C?FCASTL
+  -------         ENDMOD        ?C?FCAST
+
+  -------         MODULE        ?C?LNEG
+  C:02AAH         PUBLIC        ?C?LNEG
+  -------         ENDMOD        ?C?LNEG
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?HOUTUI?MAIN
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TINGZHI?MAIN
+
+Program Size: data=33.0 xdata=0 code=1547
+LINK/LOCATE RUN COMPLETE.  2 WARNING(S),  0 ERROR(S)

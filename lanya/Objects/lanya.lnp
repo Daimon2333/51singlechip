@@ -1,0 +1,3 @@
+".\Objects\lanya.obj" 
+TO ".\Objects\lanya" 
+PRINT(".\Listings\lanya.m51")
